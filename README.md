@@ -123,6 +123,8 @@ Releases use `.github/workflows/release.yml` and npm Trusted Publishing. Before 
 release, an owner must make this SDK repository public (required for npm provenance), create or
 verify the `@allm` npm scope, bootstrap `@allm/sdk`, and
 configure its Trusted Publisher for repository `yannickmathey/allm-sdk-typescript` and workflow
-`release.yml`. After that one-time setup, a tag matching `v<package version>` runs all checks,
+`release.yml`. Create a protected GitHub environment named `npm`, and configure the Trusted
+Publisher with that same environment name. After that one-time setup, a tag matching
+`v<package version>` runs all checks,
 performs an npm dry run, and publishes with provenance. The workflow intentionally contains no
 long-lived npm token.

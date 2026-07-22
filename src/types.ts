@@ -372,7 +372,7 @@ export interface ListChangeParams {
 }
 
 export interface ChangesMeta extends PaginationMeta {
-  retention_days: number;
+  retention_days: number | null;
 }
 
 export interface ChangesResponse {

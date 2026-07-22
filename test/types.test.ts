@@ -39,6 +39,6 @@ describe("public types", () => {
       .toEqualTypeOf<"lifecycle" | "pricing" | "capability">();
     expectTypeOf<AppliedPricing>().toHaveProperty("inputMicroUsd");
     expectTypeOf<ServiceStatus>().toHaveProperty("webhooks");
-    expectTypeOf<ChangesResponse["meta"]["retention_days"]>().toEqualTypeOf<number>();
+    expectTypeOf<ChangesResponse["meta"]["retention_days"]>().toEqualTypeOf<number | null>();
   });
 });
