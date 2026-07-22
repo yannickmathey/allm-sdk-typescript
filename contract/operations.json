@@ -1,0 +1,23 @@
+{
+  "version": "1.0.0",
+  "operations": [
+    { "operationId": "getHealth", "method": "GET", "path": "/v1/health" },
+    { "operationId": "getStatus", "method": "GET", "path": "/v1/status" },
+    { "operationId": "listProviders", "method": "GET", "path": "/v1/providers" },
+    { "operationId": "getProvider", "method": "GET", "path": "/v1/providers/{providerId}" },
+    { "operationId": "listModels", "method": "GET", "path": "/v1/models" },
+    { "operationId": "getModel", "method": "GET", "path": "/v1/models/{lab}/{model}" },
+    { "operationId": "listLabs", "method": "GET", "path": "/v1/labs" },
+    { "operationId": "getLab", "method": "GET", "path": "/v1/labs/{labId}" },
+    { "operationId": "listDeployments", "method": "GET", "path": "/v1/deployments" },
+    { "operationId": "getDeploymentShowcase", "method": "GET", "path": "/v1/deployments/showcase" },
+    { "operationId": "getDeployment", "method": "GET", "path": "/v1/deployments/{deploymentId}" },
+    { "operationId": "listLifecycleRecords", "method": "GET", "path": "/v1/lifecycle" },
+    { "operationId": "listLifecycleEvents", "method": "GET", "path": "/v1/lifecycle/events" },
+    { "operationId": "calculatePrice", "method": "POST", "path": "/v1/pricing/calculate" },
+    { "operationId": "compareDeployments", "method": "POST", "path": "/v1/deployments/compare" },
+    { "operationId": "listChanges", "method": "GET", "path": "/v1/changes" },
+    { "operationId": "evaluateDecision", "method": "POST", "path": "/v1/decisions/evaluate" },
+    { "operationId": "verifyLockfile", "method": "POST", "path": "/v1/lockfiles/verify" }
+  ]
+}

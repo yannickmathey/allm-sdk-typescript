@@ -1,0 +1,40 @@
+name: Release npm package
+
+on:
+  push:
+    tags:
+      - "v*"
+
+permissions:
+  contents: read
+  id-token: write
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    environment: npm
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v6
+      - uses: pnpm/action-setup@v6
+        with:
+          version: 11.7.0
+      - uses: actions/setup-node@v6
+        with:
+          node-version: 24
+          registry-url: https://registry.npmjs.org
+      - name: Use an npm version with Trusted Publishing support
+        run: npm install --global "npm@^11.5.1"
+      - run: pnpm install --frozen-lockfile
+      - name: Validate tag and package version
+        run: pnpm run release:check-tag
+      - run: pnpm run lint
+      - run: pnpm run scripts:check
+      - run: pnpm run typecheck
+      - run: pnpm run test
+      - run: pnpm run build
+      - name: Require production API and SDK contracts to match exactly
+        run: pnpm run contract:check:upstream:exact
+      - run: npm pack --dry-run
+      - name: Publish with npm Trusted Publishing
+        run: npm publish --access public --provenance
