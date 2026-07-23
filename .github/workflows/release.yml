@@ -51,6 +51,7 @@ jobs:
     environment: npm
     timeout-minutes: 10
     permissions:
+      actions: read
       contents: read
       id-token: write
     steps:
