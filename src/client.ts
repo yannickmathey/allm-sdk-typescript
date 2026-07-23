@@ -495,7 +495,7 @@ export class ALLM {
           headers: {
             accept: "application/json",
             authorization: `Bearer ${this.apiKey}`,
-            "x-allm-client": "@allm/sdk/1.0.0",
+            "x-allm-client": "@use-allm/sdk/1.0.0",
             "x-request-id": requestId,
             ...(options.idempotencyKey ? { "idempotency-key": options.idempotencyKey } : {}),
             ...(options.body === undefined ? {} : { "content-type": "application/json" }),
