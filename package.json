@@ -1,5 +1,5 @@
 {
-  "name": "@allm/sdk",
+  "name": "@use-allm/sdk",
   "version": "1.0.0",
   "description": "Official TypeScript SDK for the ALLM model intelligence API",
   "type": "module",

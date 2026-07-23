@@ -8,11 +8,11 @@ browsers and edge runtimes with a standard `fetch` implementation.
 > in browser-delivered JavaScript.
 
 ```bash
-pnpm add @allm/sdk
+pnpm add @use-allm/sdk
 ```
 
 ```ts
-import { ALLM } from "@allm/sdk";
+import { ALLM } from "@use-allm/sdk";
 
 const allm = new ALLM({ apiKey: process.env.ALLM_API_KEY! });
 const quote = await allm.pricing.calculate({
@@ -126,7 +126,7 @@ blocked until all 18 operations are deployed.
 
 Releases use `.github/workflows/release.yml` and npm Trusted Publishing. Before the first
 release, an owner must make this SDK repository public (required for npm provenance), create or
-verify the `@allm` npm scope, bootstrap `@allm/sdk`, and
+verify the `@use-allm` npm scope, bootstrap `@use-allm/sdk`, and
 configure its Trusted Publisher for repository `yannickmathey/allm-sdk-typescript` and workflow
 `release.yml`. Create a protected GitHub environment named `npm`, and configure the Trusted
 Publisher with that same environment name. After that one-time setup, a tag matching
