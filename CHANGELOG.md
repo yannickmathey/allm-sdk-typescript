@@ -1,5 +1,13 @@
 # Changelog
 
+## Unreleased
+
+- License the public SDK under Apache-2.0 and clarify that service access and ALLM branding
+  remain separate.
+- Add private vulnerability-reporting and contribution guidance.
+- Keep local verification usable from a standalone clone and harden the Trusted Publishing
+  release boundary.
+
 ## 1.0.0 - 2026-07-22
 
 - Cover all 18 ALLM v1 operations, including health, status, labs, the live deployment
