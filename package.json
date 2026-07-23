@@ -36,9 +36,9 @@
     "contract:check:upstream": "node scripts/check-contract.mjs https://api.use-allm.com/openapi.json",
     "contract:check:upstream:exact": "node scripts/check-contract.mjs --exact https://api.use-allm.com/openapi.json",
     "release:check-tag": "node scripts/check-release-tag.mjs",
-    "verify": "pnpm run lint && pnpm run scripts:check && pnpm run typecheck && pnpm run test && pnpm run build",
+    "verify": "npm run lint && npm run scripts:check && npm run typecheck && npm run test && npm run build",
     "pack:check": "node scripts/pack-dry-run.mjs",
-    "prepack": "pnpm run build"
+    "prepack": "npm run build"
   },
   "devDependencies": {
     "@eslint/js": "^9.0.0",
