@@ -241,6 +241,17 @@ export class ALLM {
     if (parsedBaseUrl.protocol !== "https:" && parsedBaseUrl.protocol !== "http:") {
       throw new ALLMError("baseUrl must be an absolute HTTP URL", 0, "INVALID_INPUT");
     }
+    const loopbackHosts = new Set(["localhost", "127.0.0.1", "::1", "[::1]"]);
+    if (parsedBaseUrl.protocol === "http:" && !loopbackHosts.has(parsedBaseUrl.hostname)) {
+      throw new ALLMError(
+        "baseUrl must use HTTPS unless it targets a loopback host",
+        0,
+        "INVALID_INPUT",
+      );
+    }
+    if (parsedBaseUrl.username || parsedBaseUrl.password) {
+      throw new ALLMError("baseUrl cannot contain credentials", 0, "INVALID_INPUT");
+    }
     if (parsedBaseUrl.search || parsedBaseUrl.hash) {
       throw new ALLMError("baseUrl cannot contain a query string or fragment", 0, "INVALID_INPUT");
     }
@@ -490,6 +501,7 @@ export class ALLM {
             ...(options.body === undefined ? {} : { "content-type": "application/json" }),
           },
           body: options.body === undefined ? undefined : JSON.stringify(options.body),
+          redirect: "error",
           signal: controller.signal,
         });
         this.captureResponseMetadata(response, requestId);

@@ -3,6 +3,10 @@
 Official typed client for the ALLM model intelligence API. It targets Node.js 20+, modern
 browsers and edge runtimes with a standard `fetch` implementation.
 
+> [!IMPORTANT]
+> Keep `ALLM_API_KEY` in a trusted server or edge runtime. Never include a secret ALLM API key
+> in browser-delivered JavaScript.
+
 ```bash
 pnpm add @allm/sdk
 ```
@@ -107,7 +111,8 @@ options are validated before network access.
 ## Contract and release checks
 
 ```bash
-pnpm verify                  # lint, types, tests, build, local API contract
+pnpm verify                  # lint, scripts, types, tests, and build
+pnpm contract:check:local    # compare with a sibling allm-api checkout
 pnpm contract:check:upstream # compare against the deployed OpenAPI document
 pnpm pack:check              # inspect the npm tarball without publishing
 ```
@@ -128,3 +133,15 @@ Publisher with that same environment name. After that one-time setup, a tag matc
 `v<package version>` runs all checks,
 performs an npm dry run, and publishes with provenance. The workflow intentionally contains no
 long-lived npm token.
+
+## License and service access
+
+The SDK source is licensed under the [Apache License 2.0](LICENSE). The ALLM name, logo, and
+related branding are not licensed with the SDK; see [NOTICE](NOTICE).
+
+The open-source license covers this client library only. It does not grant access to the ALLM
+API, catalog data, hosted services, or a paid plan. API access remains controlled by ALLM
+credentials, quotas, and the applicable service terms.
+
+Security issues should be reported privately as described in [SECURITY.md](SECURITY.md).
+Contributions are welcome under [CONTRIBUTING.md](CONTRIBUTING.md).

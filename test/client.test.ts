@@ -368,6 +368,27 @@ describe("ALLM transport", () => {
 describe("ALLM runtime validation", () => {
   const neverFetch = vi.fn<typeof fetch>();
 
+  it("requires HTTPS except for local development", () => {
+    expect(
+      () => new ALLM({ apiKey: "test_key", baseUrl: "http://api.example.test", fetch: neverFetch }),
+    ).toThrow("baseUrl must use HTTPS");
+    expect(
+      () => new ALLM({ apiKey: "test_key", baseUrl: "https://user:pass@example.test", fetch: neverFetch }),
+    ).toThrow("baseUrl cannot contain credentials");
+    expect(
+      () => new ALLM({ apiKey: "test_key", baseUrl: "http://127.0.0.1:3000", fetch: neverFetch }),
+    ).not.toThrow();
+  });
+
+  it("forbids automatic HTTP redirects", async () => {
+    const fetcher = vi.fn<typeof fetch>().mockResolvedValue(
+      ok({ status: "ok", service: "allm-api", catalog_release_id: "cat_test" }),
+    );
+    await createClient(fetcher).health.get();
+
+    expect(fetcher.mock.calls[0]?.[1]?.redirect).toBe("error");
+  });
+
   it.each([
     { inputTokens: Number.NaN, outputTokens: 0 },
     { inputTokens: 1.5, outputTokens: 0 },

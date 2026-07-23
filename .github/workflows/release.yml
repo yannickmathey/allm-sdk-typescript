@@ -7,24 +7,24 @@ on:
 
 permissions:
   contents: read
-  id-token: write
 
 jobs:
-  publish:
+  verify:
     runs-on: ubuntu-latest
-    environment: npm
     timeout-minutes: 15
+    permissions:
+      contents: read
     steps:
-      - uses: actions/checkout@v6
-      - uses: pnpm/action-setup@v6
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
+        with:
+          persist-credentials: false
+      - uses: pnpm/action-setup@0ebf47130e4866e96fce0953f49152a61190b271 # v6
         with:
           version: 11.7.0
-      - uses: actions/setup-node@v6
+      - uses: actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38 # v6
         with:
-          node-version: 24
-          registry-url: https://registry.npmjs.org
-      - name: Use an npm version with Trusted Publishing support
-        run: npm install --global "npm@^11.5.1"
+          node-version: 24.18.0
+          cache: pnpm
       - run: pnpm install --frozen-lockfile
       - name: Validate tag and package version
         run: pnpm run release:check-tag
@@ -35,6 +35,44 @@ jobs:
       - run: pnpm run build
       - name: Require production API and SDK contracts to match exactly
         run: pnpm run contract:check:upstream:exact
-      - run: npm pack --dry-run
+      - name: Build the release tarball
+        run: npm pack
+      - name: Preserve the verified release tarball
+        uses: actions/upload-artifact@b7c566a772e6b6bfb58ed0dc250532a479d7789f # v6
+        with:
+          name: npm-package
+          path: "*.tgz"
+          if-no-files-found: error
+          retention-days: 1
+
+  publish:
+    needs: verify
+    runs-on: ubuntu-latest
+    environment: npm
+    timeout-minutes: 10
+    permissions:
+      actions: read
+      contents: read
+      id-token: write
+    steps:
+      - uses: actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38 # v6
+        with:
+          node-version: 24.18.0
+          registry-url: https://registry.npmjs.org
+      - name: Require npm Trusted Publishing support
+        run: >-
+          node --input-type=module --eval
+          'import { execFileSync } from "node:child_process";
+          const version = execFileSync("npm", ["--version"], { encoding: "utf8" }).trim();
+          const [major, minor] = version.split(".").map(Number);
+          if (major < 11 || (major === 11 && minor < 5)) {
+            throw new Error(`npm ${version} is too old for Trusted Publishing; require >=11.5.1`);
+          }
+          console.log(`npm ${version} supports Trusted Publishing`);'
+      - name: Restore the verified release tarball
+        uses: actions/download-artifact@37930b1c2abaa49bbe596cd826c3c89aef350131 # v7
+        with:
+          name: npm-package
+          path: package
       - name: Publish with npm Trusted Publishing
-        run: npm publish --access public --provenance
+        run: npm publish package/*.tgz --access public --provenance
